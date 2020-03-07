@@ -1,29 +1,38 @@
 import load from "load-script";
 
-const KAKAO_APPKEY = "5be4aa4e20004e3fbc83810c9d0d5437";
-
-const loadScript = async () => {
-  try {
-    if (window.kakao) return;
-
-    await load(
-      `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_APPKEY}&libraries=clusterer,services,drawing"
-    `
-    );
-  } catch (err) {
-    console.log(err);
-  }
+/**
+ * async await 로 해당 스크립트가 로드되지 않아, promise 절로 우선 변경 합니다.
+ */
+const loadScript = () => {
+  return new Promise((resolve, reject) => {
+    !window.kakao
+      ? load(
+          `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
+            process.env.REACT_APP_KAKAO_MAP_KEY
+          }&autoload=false&libraries=services,clusterer,drawing`,
+          { charset: "utf-8" },
+          (error, script) => {
+            !error ? resolve(script) : reject(error);
+          }
+        )
+      : resolve();
+  });
 };
 
 const initKakaoMap = (el, callback) => {
   loadScript().then(() => {
-    const map = new window.kakao.maps.Map(el, {
-      //지도를 생성할 때 필요한 기본 옵션
-      center: new window.kakao.maps.LatLng(36.3639718, 127.3826557), //33.450701, 126.570667), //지도의 중심좌표.
-      level: 13 //, //지도의 레벨(확대, 축소 정도)
-    }); //지도 생성 및 객체 리턴
+    /**
+     * v3 스크립트를 동적으로 로드하기위해 사용
+     * http://apis.map.kakao.com/web/documentation/#load
+     */
+    window.kakao.maps.load(function() {
+      const map = new window.kakao.maps.Map(el, {
+        center: new window.kakao.maps.LatLng(36.3639718, 127.3826557), //33.450701, 126.570667), //지도의 중심좌표.
+        level: 13 //, //지도의 레벨(확대, 축소 정도)
+      }); //지도 생성 및 객체 리턴
 
-    callback && callback(map);
+      callback && callback(map);
+    });
   });
 };
 
