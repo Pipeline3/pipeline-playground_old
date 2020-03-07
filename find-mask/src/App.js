@@ -6,6 +6,8 @@ import drawMarkers from "./utils/kakaomap";
 function App() {
   useEffect(() => {
     drawMarkers(document.getElementById("map"), data);
+
+    // eslint-disable-next-line
   }, []);
 
   return (
