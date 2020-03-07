@@ -1,7 +1,5 @@
 import load from "load-script";
 
-const KAKAO_APPKEY = "5be4aa4e20004e3fbc83810c9d0d5437";
-
 /**
  * async await 로 해당 스크립트가 로드되지 않아, promise 절로 우선 변경 합니다.
  */
@@ -9,7 +7,9 @@ const loadScript = () => {
   return new Promise((resolve, reject) => {
     !window.kakao
       ? load(
-          `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_APPKEY}&autoload=false&libraries=services,clusterer,drawing`,
+          `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
+            process.env.REACT_APP_KAKAO_MAP_KEY
+          }&autoload=false&libraries=services,clusterer,drawing`,
           { charset: "utf-8" },
           (error, script) => {
             !error ? resolve(script) : reject(error);
