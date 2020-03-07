@@ -8,6 +8,8 @@ const data = [
     name: "105번째",
     full: "105번째 확진자",
     latlng: "35.817049, 128.759688",
+    lat: "35.817049",
+    lng: "",
     solo: true,
     address_name: "경북 경산시 동부동",
     address_english: "a visit to the Gyeongsan tax office"
