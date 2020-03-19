@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import "./App.css";
+import data from "./data";
+import drawMarkers from "./utils/kakaomap";
 
 function App() {
+  useEffect(() => {
+    drawMarkers(document.getElementById("map"), data);
+
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header" />
+      <div className="container">
+        <div id="map" style={{ width: "100%", height: "100vh" }} />
+      </div>
     </div>
   );
 }
