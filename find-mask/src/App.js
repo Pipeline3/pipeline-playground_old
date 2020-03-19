@@ -1,11 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import data from "./data";
 import drawMarkers from "./utils/kakaomap";
+import axios from "axios";
 
 function App() {
+  const [storeInfos, setStoreInfos] = useState([]);
+
   useEffect(() => {
-    drawMarkers(document.getElementById("map"), data);
+    const fetch = async () => {
+      try {
+        const { data } = await axios({
+          baseURL: "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1",
+          method: "get",
+          url: "/stores/json",
+          params: {
+            page: 1,
+            perPage: 500
+          }
+        });
+
+        setStoreInfos(data.storeInfos);
+        drawMarkers(document.getElementById("map"), storeInfos);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    return () => {
+      fetch();
+    };
 
     // eslint-disable-next-line
   }, []);
