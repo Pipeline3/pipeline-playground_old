@@ -52,7 +52,7 @@ const drawMarkers = (el, data, options) => {
     );
 
     const markers = (data || []).map(function(value) {
-      let latlng = value.latlng.split(",");
+      let latlng = (value.latlng || "").split(",");
 
       return new window.kakao.maps.Marker(
         Object.assign(
