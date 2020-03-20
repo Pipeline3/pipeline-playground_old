@@ -71,4 +71,10 @@ const drawMarkers = (el, data, options) => {
   });
 };
 
-export default drawMarkers;
+// 추가된 모든 마커를 삭제
+const clearMarkers = () => new window.kakao.maps.MarkerClusterer().clear();
+
+export {
+  drawMarkers,
+  clearMarkers
+};
